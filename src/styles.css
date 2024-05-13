@@ -180,7 +180,8 @@ nav .container {
   color: var(--text-color);
 }
 
-}
+
+/* No code is needed here, remove the stray closing brace */ 
 
 /* Footer */
 footer {
