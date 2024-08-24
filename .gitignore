@@ -1,0 +1,39 @@
+# Ignore build artifacts
+dist/
+build/
+out/
+
+# Ignore editor files
+.DS_Store
+.idea
+.vscode
+*.suo
+*.user
+*.tmp
+*.log
+*.bak
+*.swp
+
+# Ignore testing files
+coverage/
+*.spec.js
+*.spec.ts
+*.test.js
+*.test.ts
+
+# Ignore development files
+.env
+.env.local
+.env.development.local
+.env.production.local
+
+# Ignore package-lock.json and yarn.lock
+package-lock.json
+yarn.lock
+
+# Ignore pnpm-lock.yaml
+pnpm-lock.yaml
+
+# Ignore other files
+node_modules/
+.git
