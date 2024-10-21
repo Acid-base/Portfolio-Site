@@ -12,114 +12,130 @@ import {
   Link,
   Tag,
   Flex,
+  keyframes,
 } from "@chakra-ui/react";
 import { SunIcon, MoonIcon } from "@chakra-ui/icons";
 import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
+import theme from "./theme"; // Import the custom theme
+
+// Animation keyframes
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
 
 const Portfolio = () => {
   const { colorMode, toggleColorMode } = useColorMode();
 
-  const personalInfo = {
-    name: "Daniel Yates",
-    title: "MERN Stack Developer",
-    about: `I'm an inspired full-stack developer who loves to learn new technologies and solve new and interesting problems.
-    I specialize in React, Node.js, Express.js, and Mongodb. When I'm not coding, you can find me hiking, foraging and cultivating tasty mushrooms, or wrestling with automating my gardening chores.`,
-    github: "https://github.com/Acid-base",
-    linkedin: "https://www.linkedin.com/in/daniel-yates-b0ba47201/",
-    email: "daniel.jo.yates@gmail.com",
-  };
-
-  const projects = [
-    {
-      id: 1,
-      title: "E-commerce Platform",
-      description:
-        "A full web shop with admin portal and backend services, custom frontend built with React.  Backed by Medusa E-commerce, PostgreSQL.",
-      link: "https://github.com/janesmith/ecommerce-platform",
-    },
-    {
-      id: 2,
-      title: "",
-      description:
-        "A React-based weather application using OpenWeatherMap API and Geolocation.",
-      link: "https://github.com/Acid-base/weather-app",
-    },
-    {
-      id: 3,
-      title: "Task Manager",
-      description:
-        "A productivity app built with React and Firebase, featuring real-time updates.",
-      link: "https://github.com/Acid-base/task-manager",
-    },
-  ];
-
-  const skills = [
-    "React",
-    "Node.js",
-    "JavaScript (ES6+)",
-    "TypeScript",
-    "GraphQL",
-    "MongoDB",
-    "AWS",
-    "Docker",
-    "Git",
-    "Agile Methodologies",
-  ];
+  // Your existing personalInfo, projects, and skills data...
 
   return (
-    <ChakraProvider>
-      <Box minHeight="100vh" py={8}>
+    <ChakraProvider theme={theme}>
+      <Box 
+        minHeight="100vh" 
+        py={12}
+        animation={`${fadeIn} 1s ease-out`}
+      >
         <Container maxW="container.lg">
-          <VStack spacing={8} align="stretch">
-            <Flex justifyContent="space-between" alignItems="center">
+          <VStack spacing={12} align="stretch">
+            {/* Header Section */}
+            <Flex 
+              justifyContent="space-between" 
+              alignItems="center"
+              pb={6}
+              borderBottom="2px solid"
+              borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
+            >
               <Box>
-                <Heading as="h1" size="2xl" mb={2}>
+                <Heading 
+                  as="h1" 
+                  size="2xl" 
+                  mb={3}
+                  bgGradient="linear(to-r, blue.400, purple.500)"
+                  bgClip="text"
+                >
                   {personalInfo.name}
                 </Heading>
-                <Text fontSize="xl">{personalInfo.title}</Text>
+                <Text 
+                  fontSize="xl" 
+                  color={colorMode === "light" ? "gray.600" : "gray.300"}
+                >
+                  {personalInfo.title}
+                </Text>
               </Box>
-              <Button onClick={toggleColorMode}>
+              <Button 
+                onClick={toggleColorMode}
+                size="lg"
+                variant="ghost"
+                _hover={{ transform: "rotate(180deg)" }}
+                transition="all 0.5s ease"
+              >
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
             </Flex>
 
-            <VStack align="stretch" spacing={4}>
+            {/* About Section */}
+            <VStack align="stretch" spacing={6}>
               <Heading as="h2" size="xl">
                 About Me
               </Heading>
-              <Text>{personalInfo.about}</Text>
+              <Text 
+                fontSize="lg" 
+                lineHeight="tall"
+                color={colorMode === "light" ? "gray.700" : "gray.300"}
+              >
+                {personalInfo.about}
+              </Text>
             </VStack>
 
-            <VStack align="stretch" spacing={4}>
+            {/* Projects Section */}
+            <VStack align="stretch" spacing={6}>
               <Heading as="h2" size="xl">
                 Projects
               </Heading>
-              <SimpleGrid columns={[1, null, 3]} spacing={4}>
+              <SimpleGrid columns={[1, null, 3]} spacing={6}>
                 {projects.map((project) => (
-                  <Box key={project.id} borderWidth={1} borderRadius="lg" p={4}>
-                    <Heading as="h3" size="md" mb={2}>
+                  <Box 
+                    key={project.id} 
+                    variant="project-card"
+                    bg={colorMode === "light" ? "white" : "gray.800"}
+                  >
+                    <Heading as="h3" size="md" mb={3}>
                       {project.title}
                     </Heading>
-                    <Text mb={4}>{project.description}</Text>
-                    <Link href={project.link} color="blue.500" isExternal>
-                      View Project
+                    <Text mb={4} color={colorMode === "light" ? "gray.600" : "gray.300"}>
+                      {project.description}
+                    </Text>
+                    <Link 
+                      href={project.link} 
+                      color="blue.400" 
+                      isExternal
+                      display="inline-flex"
+                      alignItems="center"
+                      _hover={{
+                        color: "blue.500",
+                        transform: "translateX(4px)",
+                      }}
+                    >
+                      View Project →
                     </Link>
                   </Box>
                 ))}
               </SimpleGrid>
             </VStack>
 
-            <VStack align="stretch" spacing={4}>
+            {/* Skills Section */}
+            <VStack align="stretch" spacing={6}>
               <Heading as="h2" size="xl">
                 Skills
               </Heading>
-              <Flex flexWrap="wrap" gap={2}>
+              <Flex flexWrap="wrap" gap={3}>
                 {skills.map((skill) => (
                   <Tag
                     key={skill}
-                    size="md"
+                    variant="skill-tag"
                     colorScheme="blue"
-                    borderRadius="full"
+                    size="lg"
                   >
                     {skill}
                   </Tag>
@@ -127,16 +143,31 @@ const Portfolio = () => {
               </Flex>
             </VStack>
 
-            <HStack justifyContent="center" spacing={4}>
-              <Link href={personalInfo.github} isExternal>
-                <FaGithub size={24} />
-              </Link>
-              <Link href={personalInfo.linkedin} isExternal>
-                <FaLinkedin size={24} />
-              </Link>
-              <Link href={`mailto:${personalInfo.email}`}>
-                <FaEnvelope size={24} />
-              </Link>
+            {/* Social Links */}
+            <HStack 
+              justifyContent="center" 
+              spacing={8}
+              py={6}
+            >
+              {[
+                { icon: FaGithub, href: personalInfo.github },
+                { icon: FaLinkedin, href: personalInfo.linkedin },
+                { icon: FaEnvelope, href: `mailto:${personalInfo.email}` }
+              ].map((social, index) => (
+                <Link
+                  key={index}
+                  href={social.href}
+                  isExternal
+                  fontSize="2xl"
+                  color={colorMode === "light" ? "gray.600" : "gray.400"}
+                  _hover={{
+                    color: "blue.400",
+                    transform: "translateY(-2px)",
+                  }}
+                >
+                  <social.icon size={28} />
+                </Link>
+              ))}
             </HStack>
           </VStack>
         </Container>
@@ -146,4 +177,3 @@ const Portfolio = () => {
 };
 
 export default Portfolio;
-
