@@ -12,14 +12,16 @@ import {
   Link,
   Tag,
   Flex,
-  keyframes,
+  // Removed keyframes import
 } from "@chakra-ui/react";
 import { SunIcon, MoonIcon } from "@chakra-ui/icons";
 import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
 import theme from "./theme"; // Import the custom theme
+import { css } from '@emotion/react';
+
 
 // Animation keyframes
-const fadeIn = keyframes`
+const fadeIn = css`
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 `;
@@ -27,8 +29,7 @@ const fadeIn = keyframes`
 const Portfolio = () => {
   const { colorMode, toggleColorMode } = useColorMode();
 
-  // Your existing personalInfo, projects, and skills data...
-
+  
   return (
     <ChakraProvider theme={theme}>
       <Box 
