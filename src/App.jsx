@@ -1,180 +1,152 @@
+import { lazy, Suspense, useState, useEffect } from 'react';
 import {
   ChakraProvider,
   Box,
-  VStack,
-  Heading,
-  Text,
-  SimpleGrid,
   Container,
   useColorMode,
   Button,
   HStack,
   Link,
-  Tag,
-  Flex,
-  // Removed keyframes import
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { SunIcon, MoonIcon } from "@chakra-ui/icons";
 import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
-import theme from "./theme"; // Import the custom theme
-import { css } from '@emotion/react';
+import { motion } from "framer-motion";
+import theme from "./theme";
+import { personalInfo, projects, skills } from './data/portfolio-data';
+import LoadingScreen from './components/LoadingScreen';
+import { useKeyboardNav } from './hooks/useKeyboardNav';
 
+// Lazy load components
+const HeroSection = lazy(() => import('./components/HeroSection'));
+const ProjectCard = lazy(() => import('./components/ProjectCard'));
+const ScrollToTop = lazy(() => import('./components/ScrollToTop'));
+const PageTransition = lazy(() => import('./components/PageTransition'));
 
-// Animation keyframes
-const fadeIn = css`
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-`;
+const MotionBox = motion(Box);
 
-const Portfolio = () => {
+const App = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const { colorMode, toggleColorMode } = useColorMode();
 
-  
+  // Use keyboard navigation hook
+  useKeyboardNav();
+
+  useEffect(() => {
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
   return (
     <ChakraProvider theme={theme}>
-      <Box 
-        minHeight="100vh" 
-        py={12}
-        animation={`${fadeIn} 1s ease-out`}
-      >
-        <Container maxW="container.lg">
-          <VStack spacing={12} align="stretch">
-            {/* Header Section */}
-            <Flex 
-              justifyContent="space-between" 
-              alignItems="center"
-              pb={6}
-              borderBottom="2px solid"
-              borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
-            >
-              <Box>
-                <Heading 
-                  as="h1" 
-                  size="2xl" 
-                  mb={3}
-                  bgGradient="linear(to-r, blue.400, purple.500)"
-                  bgClip="text"
+      <Suspense fallback={<LoadingScreen />}>
+        <PageTransition>
+          <Box minHeight="100vh" py={12}>
+            <Container maxW="container.xl">
+              {/* Header */}
+              <HStack justify="flex-end" mb={8}>
+                <Button
+                  onClick={toggleColorMode}
+                  size="lg"
+                  variant="ghost"
+                  _hover={{ transform: "rotate(180deg)" }}
+                  transition="all 0.5s ease"
                 >
-                  {personalInfo.name}
-                </Heading>
-                <Text 
-                  fontSize="xl" 
-                  color={colorMode === "light" ? "gray.600" : "gray.300"}
-                >
-                  {personalInfo.title}
-                </Text>
-              </Box>
-              <Button 
-                onClick={toggleColorMode}
-                size="lg"
-                variant="ghost"
-                _hover={{ transform: "rotate(180deg)" }}
-                transition="all 0.5s ease"
-              >
-                {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-              </Button>
-            </Flex>
+                  {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+                </Button>
+              </HStack>
 
-            {/* About Section */}
-            <VStack align="stretch" spacing={6}>
-              <Heading as="h2" size="xl">
-                About Me
-              </Heading>
-              <Text 
-                fontSize="lg" 
-                lineHeight="tall"
-                color={colorMode === "light" ? "gray.700" : "gray.300"}
-              >
-                {personalInfo.about}
-              </Text>
-            </VStack>
+              {/* Hero Section */}
+              <HeroSection about={personalInfo.about} />
 
-            {/* Projects Section */}
-            <VStack align="stretch" spacing={6}>
-              <Heading as="h2" size="xl">
-                Projects
-              </Heading>
-              <SimpleGrid columns={[1, null, 3]} spacing={6}>
+              {/* Projects Section */}
+              <SimpleGrid
+                columns={[1, null, 3]}
+                spacing={8}
+                py={16}
+                id="projects"
+              >
                 {projects.map((project) => (
-                  <Box 
-                    key={project.id} 
-                    variant="project-card"
-                    bg={colorMode === "light" ? "white" : "gray.800"}
-                  >
-                    <Heading as="h3" size="md" mb={3}>
-                      {project.title}
-                    </Heading>
-                    <Text mb={4} color={colorMode === "light" ? "gray.600" : "gray.300"}>
-                      {project.description}
-                    </Text>
-                    <Link 
-                      href={project.link} 
-                      color="blue.400" 
-                      isExternal
-                      display="inline-flex"
-                      alignItems="center"
-                      _hover={{
-                        color: "blue.500",
-                        transform: "translateX(4px)",
-                      }}
-                    >
-                      View Project →
-                    </Link>
-                  </Box>
+                  <ProjectCard key={project.id} project={project} />
                 ))}
               </SimpleGrid>
-            </VStack>
 
-            {/* Skills Section */}
-            <VStack align="stretch" spacing={6}>
-              <Heading as="h2" size="xl">
-                Skills
-              </Heading>
-              <Flex flexWrap="wrap" gap={3}>
-                {skills.map((skill) => (
-                  <Tag
-                    key={skill}
-                    variant="skill-tag"
-                    colorScheme="blue"
-                    size="lg"
+              {/* Skills Grid */}
+              <MotionBox
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                py={16}
+              >
+                <SimpleGrid columns={[1, 2, 4]} spacing={8}>
+                  {Object.entries(skills).map(([category, skillList]) => (
+                    <Box
+                      key={category}
+                      p={6}
+                      borderRadius="xl"
+                      bg={colorMode === "light" ? "white" : "gray.800"}
+                      boxShadow="xl"
+                    >
+                      <motion.div
+                        initial={{ x: -20 }}
+                        whileInView={{ x: 0 }}
+                        viewport={{ once: true }}
+                      ></motion.div>
+                        {skillList.map((skill) => (
+                          <Box
+                            key={skill}
+                            p={2}
+                            mb={2}
+                            bg={colorMode === "light" ? "blue.50" : "blue.900"}
+                            borderRadius="md"
+                          >
+                            {skill}
+                          </Box>
+                        ))}
+                      </motion.div>
+                    </Box>
+                  ))}
+                </SimpleGrid>
+              </MotionBox>
+
+              {/* Contact Section */}
+              <HStack justify="center" spacing={8} py={16}>
+                {[
+                  { icon: FaGithub, href: personalInfo.github, label: "GitHub" },
+                  { icon: FaLinkedin, href: personalInfo.linkedin, label: "LinkedIn" },
+                  { icon: FaEnvelope, href: `mailto:${personalInfo.email}`, label: "Email" }
+                ].map((social) => (
+                  <motion.div
+                    key={social.label}
+                    whileHover={{ y: -5 }}
+                    whileTap={{ scale: 0.9 }}
                   >
-                    {skill}
-                  </Tag>
+                    <Link
+                      href={social.href}
+                      isExternal
+                      fontSize="2xl"
+                      color={colorMode === "light" ? "gray.600" : "gray.400"}
+                      _hover={{ color: "blue.400" }}
+                    >
+                      <social.icon size={32} />
+                    </Link>
+                  </motion.div>
                 ))}
-              </Flex>
-            </VStack>
-
-            {/* Social Links */}
-            <HStack 
-              justifyContent="center" 
-              spacing={8}
-              py={6}
-            >
-              {[
-                { icon: FaGithub, href: personalInfo.github },
-                { icon: FaLinkedin, href: personalInfo.linkedin },
-                { icon: FaEnvelope, href: `mailto:${personalInfo.email}` }
-              ].map((social, index) => (
-                <Link
-                  key={index}
-                  href={social.href}
-                  isExternal
-                  fontSize="2xl"
-                  color={colorMode === "light" ? "gray.600" : "gray.400"}
-                  _hover={{
-                    color: "blue.400",
-                    transform: "translateY(-2px)",
-                  }}
-                >
-                  <social.icon size={28} />
-                </Link>
-              ))}
-            </HStack>
-          </VStack>
-        </Container>
-      </Box>
+              </HStack>
+            </Container>
+          </Box>
+        </PageTransition>
+        <ScrollToTop />
+      </Suspense>
     </ChakraProvider>
   );
 };
 
-export default Portfolio;
+export default App;

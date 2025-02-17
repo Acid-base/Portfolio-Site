@@ -5,7 +5,7 @@ const theme = extendTheme({
   styles: {
     global: (props) => ({
       body: {
-        bg: props.colorMode === "dark" ? "gray.900" : "gray.50",
+        bg: props.colorMode === "light" ? "gray.50" : "gray.900",
       },
     }),
   },
@@ -34,12 +34,17 @@ const theme = extendTheme({
     Tag: {
       variants: {
         "skill-tag": {
-          borderRadius: "full",
-          px: 4,
-          py: 2,
-          transition: "all 0.2s ease",
-          _hover: {
-            transform: "scale(1.05)",
+          container: {
+            bg: "blue.500",
+            color: "white",
+            px: 4,
+            py: 2,
+            borderRadius: "full",
+            transition: "all 0.2s",
+            _hover: {
+              transform: "translateY(-2px)",
+              boxShadow: "md",
+            },
           },
         },
       },
@@ -53,6 +58,21 @@ const theme = extendTheme({
         },
       },
     },
+    Button: {
+      variants: {
+        solid: (props) => ({
+          bg: props.colorMode === "light" ? "blue.500" : "blue.200",
+          color: props.colorMode === "light" ? "white" : "gray.800",
+          _hover: {
+            bg: props.colorMode === "light" ? "blue.600" : "blue.300",
+          },
+        }),
+      },
+    },
+  },
+  config: {
+    initialColorMode: "dark",
+    useSystemColorMode: true,
   },
 });
 
