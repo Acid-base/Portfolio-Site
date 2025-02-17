@@ -1,0 +1,164 @@
+{
+  // Git Settings (enhanced)
+  "git.enableSmartCommit": true,
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.branchProtection": [
+    "main",
+    "master",
+    "prod",
+    "staging",
+    "release/*"
+  ],
+  "git.mergeEditor": true,
+  "git.openRepositoryInParentFolders": "always",
+  "git.pullBeforeCheckout": true,
+  "git.fetchOnPull": true,
+  "git.pruneOnFetch": true,
+  "git.showActionButton": {
+    "publish": true,
+    "sync": true,
+    "commit": false
+  },
+  "git.untrackedChanges": "separate",
+  "git.showUnpublishedCommitsButton": "always",
+  "git.useEditorAsCommitInput": true,
+  "git.inputValidationSubjectLength": 72,
+  "git.inputValidationLength": 120,
+  "git.defaultBranchName": "main",
+  "git.ignoreRebaseWarning": true,
+  // GitLens Configuration
+  "gitlens.hovers.enabled": true,
+  "gitlens.statusBar.enabled": true,
+  "gitlens.blame.compact": false,
+  "gitlens.currentLine.enabled": true,
+  "gitlens.codeLens.enabled": true,
+  "gitlens.defaultDateFormat": "YYYY-MM-DD HH:mm",
+  "gitlens.defaultDateShortFormat": "YYYY-MM-DD",
+  "gitlens.showWelcomeOnInstall": false,
+  "gitlens.showWhatsNewAfterUpgrades": false,
+  // GitHub Actions & PR Configuration
+  "github.gitAuthentication": true,
+  "github-actions.workflows.pinned.workflows": [
+    ".github/workflows/ci.yml",
+    ".github/workflows/release.yml"
+  ],
+  "github-actions.workflows.pinnedOnStatusBar": true,
+  "github.gitProtocol": "ssh",
+  "github.pullRequests.defaultMergeMethod": "squash",
+  "github.pullRequests.notifications": "committed",
+  "github.pullRequests.pullRequestDescription": "template",
+  // File Associations for CI/CD
+  "files.associations": {
+    "*.yaml": "yaml",
+    "*.yml": "yaml",
+    "**/workflows/*.{yml,yaml}": "yaml",
+    "**/action.{yml,yaml}": "yaml",
+    "Dockerfile*": "dockerfile",
+    ".dockerignore": "ignore",
+    ".env*": "dotenv",
+    ".gitlab-ci.yml": "yaml",
+    "docker-compose*.{yml,yaml}": "docker-compose",
+    "poetry.lock": "toml",
+    "Cargo.lock": "toml",
+    "*.json5": "jsonc",
+    "*.code-workspace": "jsonc",
+    ".markdownlint.json": "jsonc"
+  },
+  // YAML Configuration for CI/CD
+  "yaml.format.enable": true,
+  "yaml.format.singleQuote": true,
+  "yaml.validate": true,
+  "yaml.hover": true,
+  "yaml.completion": true,
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": [
+      ".github/workflows/*.yml",
+      ".github/workflows/*.yaml"
+    ],
+    "https://json.schemastore.org/github-action.json": [
+      "action.yml",
+      "action.yaml"
+    ],
+    "https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json": [
+      "docker-compose*.yml",
+      "docker-compose*.yaml"
+    ],
+    "https://json.schemastore.org/pre-commit-config.json": ".pre-commit-config.yaml",
+    "https://json.schemastore.org/codecov.json": "codecov.{yml,yaml}",
+    "https://taskfile.dev/schema.json": [
+      "Taskfile.yml",
+      "Taskfile.yaml"
+    ]
+  },
+  // Docker Configuration
+  "docker.showStartPage": false,
+  "docker.truncateMaxLength": 50,
+  "docker.containers.label": "ContainerName",
+  "docker.containers.groupBy": "ComposeProject",
+  "docker.containers.description": [
+    "ContainerName",
+    "Status",
+    "Ports"
+  ],
+  "docker.containers.sortBy": "Name",
+  "docker.images.groupBy": "Repository",
+  "docker.images.sortBy": "Registry",
+  "docker.buildKit": true,
+  "docker.networks.sortBy": "Name",
+  "docker.commands.attach": "exec",
+  "docker.commands.run": "run",
+  "docker.composeCommand": "docker compose",
+  "docker.explorerRefreshInterval": 3000,
+  // Dev Containers (updated from remote.containers)
+  "dev.containers.defaultExtensions": [
+    "github.copilot",
+    "github.vscode-pull-request-github",
+    "eamodio.gitlens",
+    "ms-azuretools.vscode-docker"
+  ],
+  "dev.containers.defaultFeatures": {
+    "docker-from-docker": {
+      "version": "latest"
+    },
+    "git": "latest",
+    "github-cli": "latest",
+    "node": "latest"
+  },
+  "dev.containers.dockerPath": "docker",
+  "dev.containers.executeInWSL": true,
+  // Format Settings
+  "yaml.format.printWidth": 120,
+  "yaml.format.proseWrap": "preserve",
+  "yaml.customTags": [
+    "!reference sequence"
+  ],
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml",
+    "editor.formatOnSave": true,
+    "editor.autoIndent": "keep",
+    "editor.tabSize": 2
+  },
+  "[dockerfile]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml",
+    "editor.formatOnSave": true,
+    "editor.quickSuggestions": {
+      "strings": true
+    }
+  },
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2
+  }
+}
