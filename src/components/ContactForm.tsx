@@ -151,7 +151,7 @@ const ContactForm: FC = () => {
                       <Input
                         id="name"
                         name="name"
-                        placeholder="Your name"
+                        placeholder="Your Name"
                         value={formData.name}
                         onChange={handleChange}
                       />
